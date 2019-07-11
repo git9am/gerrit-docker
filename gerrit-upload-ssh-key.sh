@@ -10,8 +10,8 @@ usage() {
 }
 
 # Constants configurable via environment
-GERRIT_URL=${GERRIT_LOCAL_URL:-'http://localhost:8080/gerrit'}
-JENKINS_URL=${JENKINS_REMOTE_URL:-'http://jenkins:8080/jenkins'}
+GERRIT_URL=${GERRIT_LOCAL_URL:-'http://localhost:8080'}
+JENKINS_URL=${JENKINS_REMOTE_URL:-'http://jenkins:8080'}
 
 # Constants
 SLEEP_TIME=10

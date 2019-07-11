@@ -3,11 +3,20 @@
 set -e
 
 echo "Initializing Gerrit..."
+
 gerrit-create-user.sh -t ldap -u ${INITIAL_ADMIN_USER} -p ${INITIAL_ADMIN_PASSWORD}
-gerrit-create-user.sh -t internal -A ${INITIAL_ADMIN_USER} -P ${INITIAL_ADMIN_PASSWORD} -u jenkins -f "Jenkins Server"
+gerrit-create-user.sh -t internal -A ${INITIAL_ADMIN_USER} -P ${INITIAL_ADMIN_PASSWORD} -u jenkins -f "TestBot"
+# gerrit-user-to-group.sh -A ${INITIAL_ADMIN_USER} -P ${INITIAL_ADMIN_USER} -u ${INITIAL_ADMIN_USER} -g "Administrators"
 #/add_user_to_group.sh -A ${GERRIT_USERNAME} -P ${GERRIT_PASSWORD} -u ${JENKINS_USERNAME} -g Administrators
-#/add_user_to_group.sh -A ${GERRIT_USERNAME} -P ${GERRIT_PASSWORD} -u ${INITIAL_ADMIN_USER} -g "Administrators"
 
 gerrit-upload-ssh-key.sh -A ${INITIAL_ADMIN_USER} -P ${INITIAL_ADMIN_PASSWORD} -k id_rsa.pub -u jenkins
+
+mkdir -p /var/gerrit/.ssh
+ssh-keyscan -t rsa gitlab >> /var/gerrit/.ssh/known_hosts
+cat <<EOF > /var/gerrit/.ssh/config
+Host gitlab
+  IdentityFile /var/gerrit/review_site/etc/ssh_host_rsa_key
+EOF
+chown gerrit2:gerrit2 /var/gerrit/.ssh/known_hosts /var/gerrit/.ssh/config
 
 exit 0

@@ -10,7 +10,7 @@ usage() {
 }
 
 # Constants configurable via environment
-GERRIT_URL=${GERRIT_LOCAL_URL:-'http://localhost:8080/gerrit'}
+GERRIT_URL=${GERRIT_LOCAL_URL:-'http://localhost:8080'}
 
 # Constants
 SLEEP_TIME=10
