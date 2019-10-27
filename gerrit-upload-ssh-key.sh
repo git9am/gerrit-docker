@@ -37,6 +37,9 @@ while getopts "A:P:k:u:" opt; do
   esac
 done
 
+# TODO(jiaquan.he): not a good solution
+JENKINS_PASS=${JENKINS_HTTP_CREDENTIALS}
+
 if [ -z "${username}" ] || [ -z "${password}" ] || [ -z "${key}" ] || [ -z "${user}" ]; then
     echo "Parameters missing"
     usage
@@ -46,14 +49,14 @@ key=$(echo -e "${key}" | sed 's/ /%20/g')
 user=$(echo -e "${user}" | sed 's/ /%20/g')
 
 echo "Testing Jenkins Connection & Key Presence"
-until curl --location --user ${username}:${password} --output /dev/null --silent --write-out "%{http_code}\\n" "${JENKINS_URL}/userContent/${key}" | grep "200" &> /dev/null
+until curl --location --user ${username}:${JENKINS_PASS} --output /dev/null --silent --write-out "%{http_code}\\n" "${JENKINS_URL}/userContent/${key}" | grep "200" &> /dev/null
 do
     echo "Jenkins or key unavailable, sleeping for ${SLEEP_TIME}"
     sleep "${SLEEP_TIME}"
 done
 
 echo "Retrieving value: ${key}"
-ssh_key=$(curl --silent --request GET --user ${username}:${password} "${JENKINS_URL}/userContent/${key}")
+ssh_key=$(curl --silent --request GET --user ${username}:${JENKINS_PASS} "${JENKINS_URL}/userContent/${key}")
 
 echo "Checking if \"${user}\" exists"
 if curl --location --output /dev/null --silent --write-out "%{http_code}\\n" "${GERRIT_URL}/accounts/${user}" | grep "404" &> /dev/null; then

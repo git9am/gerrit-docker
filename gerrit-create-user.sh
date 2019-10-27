@@ -69,7 +69,7 @@ case "${type}" in
 esac
 
 echo "Testing Gerrit Connection"
-until curl --location --output /dev/null --silent --write-out "%{http_code}\\n" "${GERRIT_URL}/login" | grep "401" &> /dev/null
+until curl --location --output /dev/null --silent --write-out "%{http_code}\\n" "${GERRIT_URL}/login" | grep "401\|200" &> /dev/null
 do
     echo "Gerrit unavailable, sleeping for ${SLEEP_TIME}"
     sleep "${SLEEP_TIME}"
