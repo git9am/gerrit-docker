@@ -75,11 +75,16 @@ items:
           volumeMounts:
           - name: gerrit-volume
             mountPath: /var/gerrit/review_site
+          - name: tz-config
+            mountPath: /etc/localtime
 
         volumes:
         - name: gerrit-volume
           persistentVolumeClaim:
             claimName: gerrit-volume
+        - name: tz-config
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
 
 - apiVersion: v1
   kind: PersistentVolumeClaim
