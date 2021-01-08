@@ -42,6 +42,7 @@ items:
 
         containers:
         - image: repository.azurecr.cn/gerrit:latest
+          imagePullPolicy: Always
           name: gerrit
           envFrom:
           - configMapRef:
