@@ -84,29 +84,16 @@ items:
             mountPath: /var/gerrit/review_site
           - name: tz-config
             mountPath: /etc/localtime
+          # command: [ 'sh', '-c', 'sleep 3600' ]
+        imagePullSecrets:
+          - name: repository-acr-auth
 
         volumes:
-        # - name: gerrit-volume
-        #   persistentVolumeClaim:
-        #     claimName: gerrit-volume
         - name: gerrit-volume
           azureDisk:
             kind: Managed
             diskName: gerrit-volume
-            diskURI: /subscriptions/26fb1a24-9c5e-443a-a885-13b488164e73/resourceGroups/MC_ixam-devops_ixam-devops_chinanorth2/providers/Microsoft.Compute/disks/gerrit-volume
+            diskURI: /subscriptions/9654fddb-3d87-458a-b10a-d94892b77260/resourcegroups/MC_cicd_cicd_chinanorth2/providers/Microsoft.Compute/disks/gerrit-volume
         - name: tz-config
           hostPath:
             path: /usr/share/zoneinfo/Asia/Shanghai
-
-# - apiVersion: v1
-#   kind: PersistentVolumeClaim
-#   metadata:
-#     labels:
-#       service: gerrit-volume
-#     name: gerrit-volume
-#   spec:
-#     accessModes:
-#     - ReadWriteOnce
-#     resources:
-#       requests:
-#         storage: 4Gi
